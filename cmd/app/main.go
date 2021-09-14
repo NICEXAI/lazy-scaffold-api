@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"lazy-scaffold-api/internal/config"
 	"lazy-scaffold-api/internal/domain"
 	"log"
 )
@@ -35,7 +36,7 @@ func main() {
 	}
 
 	// 启动服务
-	if err := app.Run(fmt.Sprintf(":%v", 8080)); err != nil {
+	if err := app.Run(fmt.Sprintf(":%v", config.Info.Server.Port)); err != nil {
 		log.Println("app run validate_err", err)
 	}
 }
