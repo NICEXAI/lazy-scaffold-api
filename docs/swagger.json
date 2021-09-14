@@ -1,0 +1,67 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "lazy-scaffold-api",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8088",
+    "paths": {
+        "/tool/ping": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tool"
+                ],
+                "summary": "服务健康检查",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/tool/real-ip": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tool"
+                ],
+                "summary": "获取当前服务真实出口IP",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tool.RealIPSchema"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "tool.RealIPSchema": {
+            "type": "object",
+            "properties": {
+                "client": {
+                    "description": "客户端 IP",
+                    "type": "string"
+                },
+                "server": {
+                    "description": "服务端出口IP",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

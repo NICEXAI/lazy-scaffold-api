@@ -1,0 +1,43 @@
+definitions:
+  tool.RealIPSchema:
+    properties:
+      client:
+        description: 客户端 IP
+        type: string
+      server:
+        description: 服务端出口IP
+        type: string
+    type: object
+host: localhost:8088
+info:
+  contact: {}
+  title: lazy-scaffold-api
+  version: "1.0"
+paths:
+  /tool/ping:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: 服务健康检查
+      tags:
+      - tool
+  /tool/real-ip:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tool.RealIPSchema'
+      summary: 获取当前服务真实出口IP
+      tags:
+      - tool
+swagger: "2.0"
