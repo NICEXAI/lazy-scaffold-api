@@ -5,6 +5,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
+	// lazy replace:name>lazy-scaffold-api range:1
 	"lazy-scaffold-api/internal/domain/common"
 )
 

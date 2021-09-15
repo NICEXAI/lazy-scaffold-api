@@ -1,3 +1,4 @@
+// lazy replace:name>lazy-scaffold-api range:1
 module lazy-scaffold-api
 
 go 1.17

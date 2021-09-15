@@ -2,6 +2,8 @@ package tool
 
 import (
 	"github.com/gin-gonic/gin"
+
+	// lazy replace:name>lazy-scaffold-api range:1
 	"lazy-scaffold-api/internal/domain/common"
 )
 

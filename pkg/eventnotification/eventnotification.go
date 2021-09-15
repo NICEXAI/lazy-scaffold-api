@@ -3,13 +3,14 @@ package eventnotification
 import (
 	"context"
 	"fmt"
-	uuid "github.com/satori/go.uuid"
 	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // Options 初始化参数

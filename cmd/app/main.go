@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/gin-gonic/gin"
+
+	// lazy replace:name>lazy-scaffold-api range:2
 	"lazy-scaffold-api/internal/config"
 	"lazy-scaffold-api/internal/domain"
-	"log"
 )
 
+// lazy replace:name>lazy-scaffold-api range:1
 // @title lazy-scaffold-api
 // @version 1.0
 // @in header
