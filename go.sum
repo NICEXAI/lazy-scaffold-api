@@ -41,6 +41,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/NICEXAI/go-program-tuning v0.0.5 h1:kdWdiphmr/yVHT0iwdjDpOVC6Y0rJ4IwOgIfYM6M8kM=
 github.com/NICEXAI/go-program-tuning v0.0.5/go.mod h1:290qF2JZH+SlVmSBnDbcnf/YXdgIWMhKyhGGPmOy+jM=
+github.com/NICEXAI/graceful-exit v0.0.0-20211201062806-9eea9c77aef9 h1:GpoaewEx8flZ1Z3WmEGir6bxCDbVY4e93vNIuLWJbwc=
+github.com/NICEXAI/graceful-exit v0.0.0-20211201062806-9eea9c77aef9/go.mod h1:w1f/8cI0A/MMGiV7HK+1TvnLfKHyk1YjPC/vD2y1kcQ=
 github.com/PuerkitoBio/purell v1.1.0 h1:rmGxhojJlM0tuKtfdvliR84CFHljx9ag64t2xmVkjK4=
 github.com/PuerkitoBio/purell v1.1.0/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV/sSk/8dngufqelfh6jnri85riMAaF/M=

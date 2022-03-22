@@ -1,12 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"context"
+	"errors"
 	"log"
+	"net/http"
+	"os"
+	"strconv"
+	"time"
 
 	_ "github.com/NICEXAI/go-program-tuning"
+	gracefulExit "github.com/NICEXAI/graceful-exit"
 	"github.com/gin-gonic/gin"
-
 	// lazy replace:name>lazy-scaffold-api range:2
 	"lazy-scaffold-api/internal/config"
 	"lazy-scaffold-api/internal/domain"
@@ -40,8 +45,31 @@ func main() {
 		}
 	}
 
-	// 启动服务
-	if err := app.Run(fmt.Sprintf(":%v", config.Info.Server.Port)); err != nil {
-		log.Println("app run validate_err", err)
+	server := &http.Server{
+		Addr:         ":" + strconv.Itoa(config.Info.Server.Port),
+		Handler:      app,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
+
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			if !errors.Is(err, http.ErrServerClosed) {
+				os.Exit(1)
+			}
+		}
+	}()
+
+	// 服务优雅退出
+	graceful := gracefulExit.NewGracefulExit()
+	graceful.RegistryHandle("exit", func() {
+		// 停止server服务
+		if err := server.Shutdown(context.Background()); err != nil {
+			log.Fatalf("server down error: %s", err.Error())
+		}
+
+		log.Println("service stop successfully")
+	})
+
+	graceful.Capture()
 }

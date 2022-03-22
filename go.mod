@@ -21,6 +21,7 @@ require (
 )
 
 require (
+	github.com/NICEXAI/graceful-exit v0.0.0-20211201062806-9eea9c77aef9 // indirect
 	github.com/PuerkitoBio/purell v1.1.0 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
