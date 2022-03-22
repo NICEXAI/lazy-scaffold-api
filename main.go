@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	_ "github.com/NICEXAI/go-program-tuning"
 	"github.com/gin-gonic/gin"
 
 	// lazy replace:name>lazy-scaffold-api range:2
