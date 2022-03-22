@@ -24,7 +24,7 @@ import (
 // @name Authorization
 // @host localhost:8088
 func main() {
-	app := gin.New()
+	app := gin.Default()
 
 	//注册业务模块
 	for _, option := range domain.Registry() {
