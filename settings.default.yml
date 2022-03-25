@@ -1,0 +1,6 @@
+# 服务通用配置
+application:
+  # 模式: debug(开发模式)，prod(生产模式)
+  mode: debug
+  # API 服务端口
+  port: 8080

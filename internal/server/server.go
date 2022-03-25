@@ -15,7 +15,13 @@ import (
 )
 
 func Run() {
-	app := gin.Default()
+	var app *gin.Engine
+
+	if config.Config.Application.Mode == "debug" {
+		app = gin.Default()
+	} else {
+		app = gin.New()
+	}
 
 	//注册业务模块
 	for _, option := range domain.Registry() {
@@ -37,7 +43,7 @@ func Run() {
 	}
 
 	server := &http.Server{
-		Addr:         ":" + strconv.Itoa(config.Info.Server.Port),
+		Addr:         ":" + strconv.Itoa(config.Config.Application.Port),
 		Handler:      app,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
