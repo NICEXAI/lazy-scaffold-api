@@ -2,11 +2,14 @@ package cmd
 
 import (
 	"errors"
+	"os"
+
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+
+	// lazy replace:name>lazy-scaffold-api range:2
 	"lazy-scaffold-api/internal/config"
 	"lazy-scaffold-api/internal/server"
-	"os"
 )
 
 var (

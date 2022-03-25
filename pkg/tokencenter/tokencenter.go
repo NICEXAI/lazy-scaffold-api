@@ -2,7 +2,6 @@ package tokencenter
 
 import (
 	"context"
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
@@ -45,7 +44,7 @@ type TokenCenter struct {
 
 var ctx = context.Background()
 
-func New(options Options) *TokenCenter {
+func New(options *Options) *TokenCenter {
 	if options.RefreshHandle == nil {
 		panic("TokenCenter: refresh handle not be nil")
 	}
@@ -71,9 +70,9 @@ func New(options Options) *TokenCenter {
 		expiredHandleList: make([]ExpiredHandle, 0),
 	}
 
-	//处理全局过期事件
+	// 处理全局过期事件
 	t.cache.SubscribeAllEvents(func(message string) {
-		//过滤无效事件
+		// 过滤无效事件
 		if !t.isUsableKey(message) {
 			return
 		}
@@ -82,7 +81,7 @@ func New(options Options) *TokenCenter {
 		oldToken, count := t.parseContent(content)
 		originKey := t.getOriginKey(message)
 
-		//重复定时刷新
+		// 重复定时刷新
 		if !t.refreshSW && t.refreshTime != 0 {
 			curToken, err := t.refreshHandle(oldToken)
 			if err != nil {
@@ -92,13 +91,13 @@ func New(options Options) *TokenCenter {
 				}
 				return
 			}
-			fmt.Printf("%s refresh success: %s \n", originKey, curToken)
+			// fmt.Printf("%s refresh success: %s \n", originKey, curToken)
 			_ = t.cache.Set(contentKey, t.mergeContent(curToken, count), -1)
 			_ = t.cache.Set(message, curToken, t.refreshTime)
 			return
 		}
 
-		//开启自定义刷新策略
+		// 开启自定义刷新策略
 		if t.refreshSW && len(t.refreshStrategy) > 0 {
 			if count < len(t.refreshStrategy)-1 {
 				count += 1
@@ -110,7 +109,7 @@ func New(options Options) *TokenCenter {
 					}
 					return
 				}
-				fmt.Printf("%s refresh success: %s, count: %v \n", originKey, curToken, count)
+				// fmt.Printf("%s refresh success: %s, count: %v \n", originKey, curToken, count)
 				_ = t.cache.Set(contentKey, t.mergeContent(curToken, count), -1)
 				_ = t.cache.Set(message, curToken, t.refreshStrategy[count])
 				return
@@ -125,7 +124,7 @@ func New(options Options) *TokenCenter {
 
 	// 自动恢复当前实例历史未完成任务
 	taskListKey, _, _ := t.cache.Scan(0, t.getContentKeyPrefix()+"*", 100000)
-	//批量恢复任务
+	// 批量恢复任务
 	for _, taskKey := range taskListKey {
 		contentStr, err := t.cache.Get(ctx, taskKey)
 		if err != nil {

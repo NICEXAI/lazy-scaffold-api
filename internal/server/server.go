@@ -3,15 +3,18 @@ package server
 import (
 	"context"
 	"errors"
-	gracefulExit "github.com/NICEXAI/graceful-exit"
-	"github.com/gin-gonic/gin"
-	"lazy-scaffold-api/internal/config"
-	"lazy-scaffold-api/internal/domain"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
+
+	gracefulExit "github.com/NICEXAI/graceful-exit"
+	"github.com/gin-gonic/gin"
+
+	// lazy replace:name>lazy-scaffold-api range:2
+	"lazy-scaffold-api/internal/config"
+	"lazy-scaffold-api/internal/domain"
 )
 
 func Run() {
@@ -23,11 +26,14 @@ func Run() {
 		app = gin.New()
 	}
 
-	//注册业务模块
-	for _, option := range domain.Registry() {
+	// 注册业务模块
+	domainList := domain.Registry()
+	for i := range domainList {
+		option := domainList[i]
 		group := app.Group(option.Name)
 		{
-			for _, child := range option.ChildList {
+			for j := range option.ChildList {
+				child := option.ChildList[j]
 				switch child.Method {
 				case "GET":
 					group.GET(child.Route, child.Handles...)

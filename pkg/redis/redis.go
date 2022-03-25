@@ -2,20 +2,21 @@ package redis
 
 import (
 	"context"
-	"fmt"
-	"github.com/go-redis/redis/v8"
+	"errors"
 	"sync"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
 const GlobalEvent = "global_event"
 
 type Redis struct {
-	//订阅服务器实例
+	// 订阅服务器实例
 	Point *redis.Client
-	//订阅列表
+	// 订阅列表
 	PbFns sync.Map
-	//读写锁
+	// 读写锁
 	lock sync.Mutex
 }
 
@@ -27,7 +28,7 @@ type Options struct {
 
 func New(ctx context.Context, options Options) *Redis {
 	instance := Redis{}
-	//实例化连接池，解决每次重新连接效率低的问题
+	// 实例化连接池，解决每次重新连接效率低的问题
 	instance.Point = redis.NewClient(&redis.Options{
 		Addr:     options.Addr,
 		Password: options.Password,
@@ -40,10 +41,9 @@ func New(ctx context.Context, options Options) *Redis {
 		for {
 			msg, err := pubSub.ReceiveMessage(ctx)
 			if err != nil {
-				fmt.Println(err)
 				return
 			}
-			if msg.Channel == "__keyevent@0__:expired" {
+			if msg.Channel == "__keyevent@0__:expired" { //nolint:nestif
 				pbFnList, _ := instance.PbFns.Load(msg.Payload)
 				if pbFnList != nil {
 					cbList, ok := pbFnList.([]func(message string))
@@ -53,7 +53,7 @@ func New(ctx context.Context, options Options) *Redis {
 						}
 					}
 				}
-				//处理全局订阅回调
+				// 处理全局订阅回调
 				globalFnList, _ := instance.PbFns.Load(GlobalEvent)
 				if globalFnList != nil {
 					cbList, ok := globalFnList.([]func(message string))
@@ -71,12 +71,12 @@ func New(ctx context.Context, options Options) *Redis {
 }
 
 func (r *Redis) Set(ctx context.Context, k, v string, expires time.Duration) error {
-	return r.Point.Set(ctx, k, v, expires*time.Second).Err()
+	return r.Point.Set(ctx, k, v, expires).Err()
 }
 
 func (r *Redis) Get(ctx context.Context, k string) (string, error) {
 	data, err := r.Point.Get(ctx, k).Result()
-	if err == redis.Nil {
+	if errors.Is(err, redis.Nil) {
 		return "", nil
 	}
 	if err != nil {
@@ -94,7 +94,7 @@ func (r *Redis) Do(ctx context.Context, key string, time int) error {
 }
 
 func (r *Redis) Expire(ctx context.Context, k string, expire time.Duration) error {
-	return r.Point.Expire(ctx, k, expire*time.Second).Err()
+	return r.Point.Expire(ctx, k, expire).Err()
 }
 
 func (r *Redis) Scan(ctx context.Context, cursor uint64, match string, count int64) (keys []string, newCursor uint64, err error) {
@@ -103,7 +103,7 @@ func (r *Redis) Scan(ctx context.Context, cursor uint64, match string, count int
 
 func (r *Redis) HGet(ctx context.Context, k, field string) (string, error) {
 	data, err := r.Point.HGet(ctx, k, field).Result()
-	if err == redis.Nil {
+	if errors.Is(err, redis.Nil) {
 		return "", nil
 	}
 	if err != nil {

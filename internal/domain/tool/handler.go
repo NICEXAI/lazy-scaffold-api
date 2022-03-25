@@ -36,8 +36,10 @@ func GetRealIP(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer conn.Close()
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	defer func(conn net.Conn) {
+		_ = conn.Close()
+	}(conn)
+	localAddr, _ := conn.LocalAddr().(*net.UDPAddr)
 	c.JSON(http.StatusOK, RealIPSchema{
 		Client: c.ClientIP(),
 		Server: localAddr.IP.String(),

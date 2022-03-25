@@ -2,7 +2,7 @@ package eventnotification
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -36,7 +36,6 @@ type EventNotification struct {
 	maxBuffer  uint
 	expireTime uint        // 过期时间
 	queue      sync.Map    // 消息队列
-	mutex      sync.Mutex  // 互斥锁
 	cache      MemoryCache // 消息存储
 }
 
@@ -62,7 +61,7 @@ func New(options Options) *EventNotification {
 		options.MaxBuffer = uint(maxBuffer)
 	}
 	eventNotification := EventNotification{cache: options.Cache, expireTime: options.ExpireTime, maxBuffer: options.MaxBuffer}
-	//启动消息中心服务
+	// 启动消息中心服务
 	go eventNotification.runMessageCenter()
 	return &eventNotification
 }
@@ -141,7 +140,7 @@ func (r *EventNotification) PutMessage(registryId string, msg Message) (err erro
 	return r.setOriginMessage(registryId, msg.Name, string(msg.Content))
 }
 
-//runMessageCenter 消息中心
+// runMessageCenter 消息中心
 func (r *EventNotification) runMessageCenter() {
 	for {
 		time.Sleep(200 * time.Millisecond)
@@ -167,15 +166,15 @@ func (r *EventNotification) runMessageCenter() {
 				continue
 			}
 
-			//广播消息
+			// 广播消息
 			message := Message{
 				Name:    msgName,
 				Content: []byte(msgContent),
 			}
 
-			//获取同一注册码下所有成员消息队列
+			// 获取同一注册码下所有成员消息队列
 			if memberQueue, ok := r.queue.Load(registryID); ok {
-				//向所有成员分发消息
+				// 向所有成员分发消息
 				if memberList, ok := memberQueue.(*sync.Map); ok {
 					memberList.Range(func(key, member interface{}) bool {
 						if member, ok := member.(chan Message); ok {
@@ -186,7 +185,7 @@ func (r *EventNotification) runMessageCenter() {
 				}
 			}
 
-			//消息置为已消费
+			// 消息置为已消费
 			_ = r.delOriginMessage(registryID, msgName)
 		}
 	}
@@ -224,7 +223,7 @@ func (r *EventNotification) delOriginMessage(namespace, state string) error {
 func (r *EventNotification) scanOriginMessage() (msgList []string) {
 	list, _, err := r.cache.Scan(0, "event:*", 1000)
 	if err != nil {
-		fmt.Printf("全局共享状态扫描失败：%v", err.Error())
+		log.Printf("全局共享状态扫描失败：%v", err.Error())
 	}
 	return list
 }

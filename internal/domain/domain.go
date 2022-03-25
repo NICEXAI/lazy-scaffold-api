@@ -1,6 +1,7 @@
 package domain
 
 import (
+
 	// lazy replace:name>lazy-scaffold-api range:3
 	"lazy-scaffold-api/internal/domain/common"
 	"lazy-scaffold-api/internal/domain/docs"

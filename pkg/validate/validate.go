@@ -2,12 +2,13 @@ package validate
 
 import (
 	"errors"
+	"strings"
+	"time"
+
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
-	"strings"
-	"time"
 )
 
 var Validator *validator.Validate
@@ -17,11 +18,11 @@ var trans ut.Translator
 func init() {
 	Validator = validator.New()
 
-	//注册翻译器
+	// 注册翻译器
 	trans, _ = ut.New(zh.New()).GetTranslator("zh")
 	_ = zhTranslations.RegisterDefaultTranslations(Validator, trans)
 
-	//注册自定义验证函数
+	// 注册自定义验证函数
 	_ = Validator.RegisterValidation("timeUnix", timeUnix)
 }
 
@@ -31,7 +32,8 @@ func ParseStruct(s interface{}) error {
 	if err == nil {
 		return nil
 	}
-	if list, ok := err.(validator.ValidationErrors); ok {
+	var list validator.ValidationErrors
+	if ok := errors.Is(err, list); ok {
 		msgList := make([]string, 0)
 		for _, val := range list {
 			msgList = append(msgList, val.Translate(trans))
@@ -41,7 +43,7 @@ func ParseStruct(s interface{}) error {
 	return errors.New("参数校验异常，请联系开发人员")
 }
 
-//TimeUnix 校验时间戳
+// TimeUnix 校验时间戳
 func timeUnix(f validator.FieldLevel) bool {
 	unix := f.Field().Int()
 	if unix == 0 {

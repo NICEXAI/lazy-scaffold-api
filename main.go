@@ -3,6 +3,7 @@ package main
 import (
 	_ "github.com/NICEXAI/go-program-tuning"
 
+	// lazy replace:name>lazy-scaffold-api range:1
 	"lazy-scaffold-api/cmd"
 )
 
