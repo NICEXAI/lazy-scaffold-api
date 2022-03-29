@@ -5,7 +5,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
-	// lazy replace:name>lazy-scaffold-api range:2
+	// @Lazy var:name>lazy-scaffold-api scope:2
 	_ "lazy-scaffold-api/docs"
 	"lazy-scaffold-api/internal/domain/common"
 )

@@ -1,2 +1,2 @@
-// lazy replace:name>lazy-scaffold-api range:3
+// @Lazy var:name>lazy-scaffold-api scope:3
 # lazy-scaffold-api

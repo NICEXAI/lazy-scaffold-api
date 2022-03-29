@@ -12,7 +12,7 @@ import (
 	gracefulExit "github.com/NICEXAI/graceful-exit"
 	"github.com/gin-gonic/gin"
 
-	// lazy replace:name>lazy-scaffold-api range:2
+	// @Lazy var:name>lazy-scaffold-api scope:2
 	"lazy-scaffold-api/internal/config"
 	"lazy-scaffold-api/internal/domain"
 )

@@ -7,7 +7,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	// lazy replace:name>lazy-scaffold-api range:2
+	// @Lazy var:name>lazy-scaffold-api scope:2
 	"lazy-scaffold-api/internal/config"
 	"lazy-scaffold-api/internal/server"
 )
@@ -21,7 +21,7 @@ func init() {
 }
 
 var rootCmd = &cobra.Command{
-	// lazy replace:name>lazy-scaffold-api range:1
+	// @Lazy var:name>lazy-scaffold-api scope:1
 	Use: "lazy-scaffold-api",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		// 初始化系统配置

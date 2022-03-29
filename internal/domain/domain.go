@@ -2,7 +2,7 @@ package domain
 
 import (
 
-	// lazy replace:name>lazy-scaffold-api range:3
+	// @Lazy var:name>lazy-scaffold-api scope:3
 	"lazy-scaffold-api/internal/domain/common"
 	"lazy-scaffold-api/internal/domain/docs"
 	"lazy-scaffold-api/internal/domain/tool"
